@@ -40,6 +40,16 @@ class StockScraper():
         else:
             return None
 
+    def __getIbex35Headers(self,stockTable):
+        
+        headersIbex35 = stockTable.find("th").parent
+        cells = headersIbex35.find_all('th')
+        array = [i.text for i in cells]        
+        return array
+
+
+
+
     def scrape(self):
         print ("Stocks Web Scraping  from " + "'" + self.url + "'...")
 
@@ -53,6 +63,8 @@ class StockScraper():
         stockInfo = []
         headers = []
        
+        headers = self.__getHeaders(stockTable)
+
         for row in stockTable: 
             cells = self.__getArrayFromRow(row)            
             if len(cells) != 0:
