@@ -72,6 +72,12 @@ class StockScraper():
         
         headersDeatil = self.__getCompanyDetailHeaders(stockTable,details)
 
+
+        headers = headersIbex35 + headersDeatil         
+
+        self.storeobject.open_file()        
+        self.storeobject.write_row(headers)
+
         for row in stockTable: 
             cells = self.__getArrayFromRow(row)            
             if len(cells) != 0:
@@ -80,15 +86,10 @@ class StockScraper():
                     links.append(link)
                     print(link)
                     values = details.scrapeValueDetails(link)
-                    stockInfo.append(cells+values)
-                else:
-                    headers=cells
+                    #stockInfo.append(cells+values)
+                    self.storeobject.write_row(cells+values)    
+
         
         # headers = headers+details.scapeHeaderDetails(links[0])
-        headers = headersIbex35 + headersDeatil           
-
-        self.storeobject.open_file()        
-        self.storeobject.write_row(headers)
-        for stock in stockInfo:
-            self.storeobject.write_row(stock)      
+              
         self.storeobject.close_file()
