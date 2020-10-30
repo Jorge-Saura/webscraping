@@ -42,11 +42,16 @@ class StockScraper():
 
     def __getIbex35Headers(self,stockTable):
         
-        headersIbex35 = stockTable.find("th").parent
-        cells = headersIbex35.find_all('th')
-        array = [i.text for i in cells]        
-        return array
+        row = stockTable[0]
+        cells = self.__getArrayFromRow(row)
+        
+        return cells
 
+    def __getCompanyDetailHeaders(self, stockTable, detailsScraper):
+        row = stockTable[1]
+        link = self.__getLinkURL(row)
+        array = detailsScraper.scapeHeaderDetails(link)     
+        return array
 
 
 
@@ -63,7 +68,9 @@ class StockScraper():
         stockInfo = []
         headers = []
        
-        headers = self.__getHeaders(stockTable)
+        headersIbex35 = self.__getIbex35Headers(stockTable)
+        
+        headersDeatil = self.__getCompanyDetailHeaders(stockTable,details)
 
         for row in stockTable: 
             cells = self.__getArrayFromRow(row)            
@@ -77,7 +84,8 @@ class StockScraper():
                 else:
                     headers=cells
         
-        headers = headers+details.scapeHeaderDetails(links[0])           
+        # headers = headers+details.scapeHeaderDetails(links[0])
+        headers = headersIbex35 + headersDeatil           
 
         self.storeobject.open_file()        
         self.storeobject.write_row(headers)
