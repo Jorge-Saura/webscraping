@@ -54,8 +54,6 @@ class historicScraper():
         # get data
         pageHistoricFiltered = self.__getPageHistoric_Filtered(pageHistoric)
 
-
-
         # navigate  all next pages
         # get data
         # return data
